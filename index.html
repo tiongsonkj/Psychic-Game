@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+	<meta charset="UTF-8">
+	<title>Psychic Game</title>
+</head>
+
+<body>
+	<div id="game">
+		<h1>The Psychic Game</h1>
+
+		<p>Guess what letter I'm thinking of</p>
+	</div>
+	<script type="text/javascript">
+
+		// the letter that the computer could be thinking of
+		var computerChoices = ["a", "b", "c", "d", "d", "e", 
+		"f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
+
+		// setting the values of wins, losses, and guesses
+		var wins = 0;
+		var losses = 0;
+		var guesses = 9;
+
+		
+	    // This function is run whenever the user presses a key.
+	    document.onkeyup = function(event) {
+
+	      // Determines which key was pressed.
+	      var userGuess = event.key;
+
+	      // Randomly chooses a choice from the options array. This is the Computer's guess.
+	      var computerGuess = computerChoices[Math.floor(Math.random() * computerChoices.length)];
+
+	      if (userGuess === computerChoices) {
+	      	wins++;
+	      } else {
+	      	guesses--;
+	      }
+
+	      if (guesses == 0) {
+	      	losses++;
+	      	guesses = 9;
+	      }
+       
+       // Creating a variable to hold our new HTML. Our HTML now keeps track of the user guesses, and wins/losses/ties.
+        var html =
+          "Guess what letter I'm thinking of" +
+          "<p>Wins: " + wins + "</p>" +
+          "<p>Losses: " + losses + "</p>" +
+          "<p>Guesses Left: " + guesses + "</p>" +
+          "<p>Your Guesses so far: " + userGuess + "</p>";
+
+		// Set the inner HTML contents of the #game div to our html string
+        document.querySelector("#game").innerHTML = html;
+    };
+	</script>
+
+	<!-- Pseudocode:
+
+	Computer asks: Guess what letter I'm thinking of {
+		user types in a letter
+	}
+
+	User gets 9 guesses. 
+	If user presses wrong letter, then "guests left" goes down 1.
+	Computer shows user what he has guessed so far.
+
+	If user guesses wrong letter on 9th try, then "Losses" goes up 1.
+	
+	If user guesses right letter within 9 attempts, then "Wins" goes up 1.
+} -->
+</body>
+</html>
