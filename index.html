@@ -2,85 +2,88 @@
 <html lang="en-us">
 <head>
 	<meta charset="UTF-8">
-	<title>Psychic Game</title>
+	<title>Psychic Game My Code</title>
 </head>
 
 <body>
-	<!-- Shows on when game starts! -->
-	<h1>The Psychic Game</h1>
+	<h1>Psychic Game</h1>
 
 	<p>Guess what letter I'm thinking of</p>
 
+	<!-- Div block for the game where I push everything into. -->
 	<div id="game">
 	</div>
 
 	<script type="text/javascript">
-
-		// an array of the letter that the computer could be thinking of
-		var computerChoices = ["a", "b", "c", "d", "d", "e", 
-		"f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
-
-		// setting the values of wins, losses, and guesses
+		
+		// Setting the values for the wins, losses, and guesses left.
 		var wins = 0;
 		var losses = 0;
-		var guesses = 9;
+		var guessesLeft = 9;
 
+		// The user choices
+		var userChoices = ["a", "b", "c", "d", "d", "e","f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
+
+		// an array of the letter that the computer could be thinking of
+		var computerChoices = ["a", "b", "c", "d", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
+
+
+		var userText = document.getElementById("game");
+
+		// created a new array to push the user's choices into.
+		var keysPushed = []
+		// This function is run whenever the user presses a key.
+		document.onkeyup = function(event) {
+			userText.textContent = event.key;
+			// grabs the key and sets it to userGuess.
+			var userGuess = event.key;
 		
-	    // This function is run whenever the user presses a key.
-	    document.onkeyup = function(event) {
-
-	      // Determines which key was pressed.
-	      var userGuess = event.key;
-
-	      // Randomly chooses a choice from the options array. This is the Computer's letter he is thinking of.
-	      var computerGuess = computerChoices[Math.floor(Math.random() * computerChoices.length)];
-
-	      // If user's guess is equal to computer's letter then win goes up by 1. Or else subtract the amount of guesses (which is 9) by 1. Subtract the computer's list choices as well.
-	      if (userGuess == computerGuess) {
-	      	wins++;
-	      } else {
-	      	guesses--;
-	      	computerGuess--;
-	      	console.log(computerGuess);
-	      }
-
-	      // If guesses get dropped down to 0, then losses goes up 1 and the value of guesses gets reset to 1.
-	      if (guesses == 0) {
-	      	losses++;
-	      	guesses = 9;
-	      }
-       
-       // Creating a variable to hold our new HTML. Our HTML now keeps track of the user guesses, and wins/losses/ties. 
-       // QUESTION: HOW DO YOU KEEP TRACK OF ALL 9 GUESSES?
-        var html =
-          "<p>Wins: " + wins + "</p>" +
-          "<p>Losses: " + losses + "</p>" +
-          "<p>Guesses Left: " + guesses + "</p>" +
-          "<p>Your guesses so far: " + userGuess + "</p>" +
-
-          "<p>The computer's guess: " + computerGuess + "</p>";
-
-          console.log(userGuess);
 
 
-		// Set the inner HTML contents of the #game div to our html string
-        document.querySelector("#game").innerHTML = html;
-    	};
+			// Randomly chooses a choice from the options array. This is the computer's guess.
+			var computerGuess = computerChoices[Math.floor(Math.random() * computerChoices.length)];
+
+			// Logic of outcome of game
+			// if userguess = one of the choices then lets play else...no play!
+			// IS THERE AN EASIER WAY TO SET THIS CONDITIONAL STATEMENT?!
+			if ((userGuess === "a") || (userGuess === "b") || (userGuess === "c") || (userGuess === "d") || (userGuess === "e") || (userGuess === "f") || (userGuess === "g") || (userGuess === "h") || (userGuess === "i") || (userGuess === "j") || (userGuess === "k") || (userGuess === "l") || (userGuess === "m") || (userGuess === "n") || (userGuess === "o") || (userGuess === "p") || (userGuess === "q") || (userGuess === "r") || (userGuess === "s") || (userGuess === "t") || (userGuess === "u") || (userGuess === "v") || (userGuess === "w") || (userGuess === "x") || (userGuess === "y") || (userGuess === "z")) {
+				console.log("Cool let's play");
+
+				if (userGuess == computerGuess) {
+					wins++;
+					keysPushed.length = 0;
+					console.log("you won!")
+					console.log(wins);
+				} else if (userGuess != computerGuess) {
+					guessesLeft--;
+					keysPushed.push(userGuess);
+					console.log("Sorry guess again!")
+					console.log("you have this many guesses left: " + guessesLeft);
+					console.log(computerGuess);
+					console.log(keysPushed);
+				}
+
+			// Separate conditional statement if guesses left gets down to 0. 
+			// If guessesLeft = 0, then add 1 to losses and reset the guesses available of the game.
+				if (guessesLeft == 0) {
+					losses++;
+					guessesLeft = 9;
+					console.log("Start Over!");
+					keysPushed.length = 0;
+					console.log(keysPushed);
+				}
+
+				var html = 
+
+				"<p>Wins: " + wins + "</p>" +
+				"<p>Losses: " + losses + "</p>" +
+				"<p>Guesses Left: " + guessesLeft + "</p>" + "<p>Your Guesses so far:" + keysPushed + "</p>";
+
+				document.getElementById("game").innerHTML = html;
+			}
+		};
+		
 	</script>
 
-	<!-- Pseudocode:
-
-	Computer asks: Guess what letter I'm thinking of {
-		user types in a letter
-	}
-
-	User gets 9 guesses. 
-	If user presses wrong letter, then "guests left" goes down 1.
-	Computer shows user what he has guessed so far.
-
-	If user guesses wrong letter on 9th try, then "Losses" goes up 1.
-	
-	If user guesses right letter within 9 attempts, then "Wins" goes up 1.
-} -->
 </body>
 </html>
